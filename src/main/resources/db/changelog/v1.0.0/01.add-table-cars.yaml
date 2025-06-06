@@ -1,0 +1,50 @@
+databaseChangeLog:
+  - changeSet:
+      id: 01.add-table-cars
+      author: lytvenkov
+      changes:
+        - createTable:
+            tableName: cars
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  remarks: Уникальный идентификатор записи
+                  constraints:
+                    primaryKey: true
+                    unique: true
+                    nullable: false
+              - column:
+                  name: reg_number
+                  type: varchar(11)
+                  remarks: Регистрационный номер транспортного средства
+                  constraints:
+                    nullable: false
+              - column:
+                  name: type
+                  type: varchar
+                  remarks: Тип транспортного средства
+                  constraints:
+                    nullable: false
+              - column:
+                  name: enter_time
+                  type: timestamp
+                  remarks: Дата и время заезда транспортного средства на парковку
+                  constraints:
+                    nullable: false
+              - column:
+                  name: leave_time
+                  type: timestamp
+                  remarks: Дата и время выезда транспортного средства с парковки
+              - column:
+                  name: created_at
+                  type: timestamp
+                  remarks: Дата и время создания записи
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: timestamp
+                  remarks: Дата и время обновления записи
+                  constraints:
+                    nullable: false

@@ -1,0 +1,4 @@
+databaseChangeLog:
+  - include:
+      file: 01.add-table-cars.yaml
+      relativeToChangelogFile: true

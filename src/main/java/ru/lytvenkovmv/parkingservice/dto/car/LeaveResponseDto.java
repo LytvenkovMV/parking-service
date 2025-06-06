@@ -1,8 +1,15 @@
 package ru.lytvenkovmv.parkingservice.dto.car;
 
-import java.time.LocalDateTime;
+import lombok.Getter;
+import lombok.Setter;
 
-public class LeaveVehicleRequestDto {
+import java.time.LocalDateTime;
+import java.util.UUID;
+
+@Getter
+@Setter
+public class LeaveResponseDto {
+    private UUID id;
     private String regNumber;
     private LocalDateTime leaveTime;
 }

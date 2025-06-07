@@ -1,15 +1,15 @@
-package ru.lytvenkovmv.parkingservice.dto.car;
+package ru.lytvenkovmv.parkingservice.dto.parking;
 
 import lombok.Getter;
 import lombok.Setter;
-import ru.lytvenkovmv.parkingservice.enums.VehicleType;
 
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
-public class EnterRequestDto {
+public class EnterResponseDto {
+    private String id;
     private String regNumber;
-    private VehicleType type;
+    private String type;
     private LocalDateTime enterTime;
 }

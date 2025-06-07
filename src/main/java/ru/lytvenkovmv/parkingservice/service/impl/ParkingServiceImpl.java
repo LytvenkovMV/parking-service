@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 import ru.lytvenkovmv.parkingservice.dto.pageable.PageableDto;
 import ru.lytvenkovmv.parkingservice.dto.parking.EnterRequestDto;
 import ru.lytvenkovmv.parkingservice.dto.parking.EnterResponseDto;
-import ru.lytvenkovmv.parkingservice.dto.parking.LeaveRequestDto;
-import ru.lytvenkovmv.parkingservice.dto.parking.LeaveResponseDto;
+import ru.lytvenkovmv.parkingservice.dto.parking.ExitResponseDto;
+import ru.lytvenkovmv.parkingservice.dto.parking.ExitRequestDto;
 import ru.lytvenkovmv.parkingservice.dto.parking.ParkRecordResponseDto;
 import ru.lytvenkovmv.parkingservice.entity.ParkRecord;
 import ru.lytvenkovmv.parkingservice.exception.ParkingException;
@@ -17,6 +17,7 @@ import ru.lytvenkovmv.parkingservice.mapper.ParkRecordMapper;
 import ru.lytvenkovmv.parkingservice.repository.ParkRecordRepository;
 import ru.lytvenkovmv.parkingservice.service.ParkingService;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -48,35 +49,36 @@ public class ParkingServiceImpl implements ParkingService {
 
     @Override
     public EnterResponseDto enterParking(EnterRequestDto requestDto) {
-        ParkRecord parkRecord = mapper.parkRecordFrom(requestDto);
+        LocalDateTime enterTime = LocalDateTime.now();
+        ParkRecord parkRecord = mapper.parkRecordFrom(requestDto, enterTime);
 
         String regNumber = parkRecord.getRegNumber();
         repository.findByRegNumberAndLeaveTimeIsNull(regNumber)
                 .ifPresent(record -> {
                     throw new ParkingException("Т/с с рег. номером " + regNumber + " уже на парковке");
                 });
-
         repository.save(parkRecord);
 
         return mapper.enterResponseDtoFrom(parkRecord);
     }
 
     @Override
-    public LeaveResponseDto leaveParking(LeaveRequestDto requestDto) {
+    public ExitResponseDto exitParking(ExitRequestDto requestDto) {
         UUID id = UUID.fromString(requestDto.getId());
         String regNumber = requestDto.getRegNumber();
+        LocalDateTime leaveTime = LocalDateTime.now();
         Optional<ParkRecord> parkRecordOpt = repository.findByIdAndRegNumber(id, regNumber);
 
         ParkRecord parkRecord = parkRecordOpt.orElseThrow(() -> new ParkingException("Не найдена запись в БД с ID: " + id + " и рег. номером " + regNumber));
         if (Objects.nonNull(parkRecord.getLeaveTime())) {
-            throw new ParkingException("Т/с с рег. номером " + regNumber + "уже покинуло парковку " + parkRecord.getLeaveTime());
-        } else if (parkRecord.getEnterTime().isAfter(requestDto.getLeaveTime())) {
+            throw new ParkingException("Т/с с рег. номером " + regNumber + " уже покинуло парковку " + parkRecord.getLeaveTime());
+        } else if (parkRecord.getEnterTime().isAfter(leaveTime)) {
             throw new ParkingException("Время выезда раньше, чем время заезда");
         }
 
-        parkRecord.setLeaveTime(requestDto.getLeaveTime());
+        parkRecord.setLeaveTime(leaveTime);
         repository.save(parkRecord);
 
-        return mapper.leaveResponseDtoFrom(parkRecord);
+        return mapper.exitResponseDtoFrom(parkRecord);
     }
 }

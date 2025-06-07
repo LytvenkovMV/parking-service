@@ -3,8 +3,8 @@ package ru.lytvenkovmv.parkingservice.service;
 import ru.lytvenkovmv.parkingservice.dto.pageable.PageableDto;
 import ru.lytvenkovmv.parkingservice.dto.parking.EnterRequestDto;
 import ru.lytvenkovmv.parkingservice.dto.parking.EnterResponseDto;
-import ru.lytvenkovmv.parkingservice.dto.parking.LeaveRequestDto;
-import ru.lytvenkovmv.parkingservice.dto.parking.LeaveResponseDto;
+import ru.lytvenkovmv.parkingservice.dto.parking.ExitRequestDto;
+import ru.lytvenkovmv.parkingservice.dto.parking.ExitResponseDto;
 import ru.lytvenkovmv.parkingservice.dto.parking.ParkRecordResponseDto;
 
 import java.util.List;
@@ -16,5 +16,5 @@ public interface ParkingService {
 
     EnterResponseDto enterParking(EnterRequestDto requestDto);
 
-    LeaveResponseDto leaveParking(LeaveRequestDto requestDto);
+    ExitResponseDto exitParking(ExitRequestDto requestDto);
 }

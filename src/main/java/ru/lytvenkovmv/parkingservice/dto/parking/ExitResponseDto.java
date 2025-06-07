@@ -8,13 +8,13 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-public class EnterResponseDto {
+public class ExitResponseDto {
     @Schema(description = "Идентификатор записи парковки")
     private String id;
 
     @Schema(description = "Регистрационный номер транспортного средства")
     private String regNumber;
 
-    @Schema(description = "Время въезда на парковку")
-    private LocalDateTime enterTime;
+    @Schema(description = "Время выезда с парковки")
+    private LocalDateTime leaveTime;
 }

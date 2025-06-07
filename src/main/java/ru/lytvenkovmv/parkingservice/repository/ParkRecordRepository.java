@@ -11,28 +11,32 @@ import java.util.UUID;
 
 @Repository
 public interface ParkRecordRepository extends JpaRepository<ParkRecord, UUID> {
-    Optional<ParkRecord> findByRegNumberAndLeaveTimeIsNull(String regNumber);
+    Optional<ParkRecord> findByRegNumberAndExitTimeIsNull(String regNumber);
 
-    Optional<ParkRecord> findByIdAndRegNumber(UUID id, String regNumber);
+    Integer countAllByExitTimeIsNull();
 
     @Query("""
                 SELECT COUNT(pr) FROM ParkRecord pr
-                  WHERE pr.enterTime > :startDate
-                  AND pr.enterTime < :endDate
+                WHERE pr.enterTime >= :startDate
+                AND pr.enterTime <= :endDate
             """)
     Long countEntered(LocalDateTime startDate, LocalDateTime endDate);
 
     @Query("""
                 SELECT COUNT(pr) FROM ParkRecord pr
-                WHERE pr.leaveTime IS NOT NULL
-                  AND pr.leaveTime > :startDate
-                  AND pr.leaveTime < :endDate
+                WHERE pr.exitTime IS NOT NULL
+                AND pr.exitTime >= :startDate
+                AND pr.exitTime <= :endDate
             """)
-    Long countLeaved(LocalDateTime startDate, LocalDateTime endDate);
+    Long countExited(LocalDateTime startDate, LocalDateTime endDate);
 
-    @Query("""
-                SELECT COUNT(pr) FROM ParkRecord pr
-                WHERE pr.leaveTime IS NOT NULL
-            """)
+    @Query(value = """
+                SELECT AVG(EXTRACT(EPOCH FROM (pr.exit_time - pr.enter_time)))
+                FROM park_records pr
+                WHERE pr.exit_time IS NOT NULL
+                AND pr.enter_time >= :startDate
+                AND pr.exit_time <= :endDate
+            """,
+            nativeQuery = true)
     Long findAvgParkTimeInSeconds(LocalDateTime startDate, LocalDateTime endDate);
 }

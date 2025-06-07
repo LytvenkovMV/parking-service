@@ -18,7 +18,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Entity
-@Table(name = "cars")
+@Table(name = "park_records")
 @NoArgsConstructor
 @AllArgsConstructor
 public class ParkRecord extends AuditableEntity {
@@ -43,7 +43,7 @@ public class ParkRecord extends AuditableEntity {
     /**
      * Дата и время выезда транспортного средства с парковки
      */
-    private LocalDateTime leaveTime;
+    private LocalDateTime exitTime;
 
     @Override
     public boolean equals(Object o) {

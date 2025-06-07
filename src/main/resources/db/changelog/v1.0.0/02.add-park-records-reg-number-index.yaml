@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - changeSet:
+      id: 02.add-park-records-reg-number-index
+      author: lytvenkov
+      changes:
+        - createIndex:
+            tableName: park_records
+            indexName: reg_number_idx
+            columns:
+              - column:
+                  name: reg_number

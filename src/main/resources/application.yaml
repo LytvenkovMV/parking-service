@@ -21,4 +21,4 @@ spring:
 
 parking-service:
   parking:
-    size: 72
+    total-places: 72

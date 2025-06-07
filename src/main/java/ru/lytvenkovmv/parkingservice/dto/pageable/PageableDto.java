@@ -31,10 +31,8 @@ public class PageableDto {
     Integer size;
 
     @Schema(description = "Имя поля для сортировки",
-            example = "regNumber",
-            requiredMode = Schema.RequiredMode.REQUIRED
+            example = "regNumber"
     )
-    @NotBlank(message = "Название поля для сортировки не может быть пустой строкой")
     String sortBy;
 
     @Schema(description = "Направление сортировки: asc (по возрастанию) или desk (по убыванию)",

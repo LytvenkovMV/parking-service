@@ -16,5 +16,5 @@ public class ExitResponseDto {
     private String regNumber;
 
     @Schema(description = "Время выезда с парковки")
-    private LocalDateTime leaveTime;
+    private LocalDateTime exitTime;
 }

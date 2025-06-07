@@ -1,10 +1,10 @@
 databaseChangeLog:
   - changeSet:
-      id: 01.add-table-cars
+      id: 01.add-table-park-records
       author: lytvenkov
       changes:
         - createTable:
-            tableName: cars
+            tableName: park_records
             columns:
               - column:
                   name: id
@@ -33,7 +33,7 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
-                  name: leave_time
+                  name: exit_time
                   type: timestamp
                   remarks: Дата и время выезда транспортного средства с парковки
               - column:

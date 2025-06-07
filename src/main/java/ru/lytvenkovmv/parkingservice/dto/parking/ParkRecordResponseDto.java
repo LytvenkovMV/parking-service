@@ -23,5 +23,5 @@ public class ParkRecordResponseDto {
     private LocalDateTime enterTime;
 
     @Schema(description = "Время выезда с парковки")
-    private LocalDateTime leaveTime;
+    private LocalDateTime exitTime;
 }

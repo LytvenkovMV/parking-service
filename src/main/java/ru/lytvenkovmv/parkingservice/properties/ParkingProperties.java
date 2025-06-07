@@ -16,5 +16,5 @@ import org.springframework.validation.annotation.Validated;
 public class ParkingProperties {
     @NotNull(message = "Количество парковочных мест должно быть задано")
     @Range(min = 1, max = 100000, message = "Количество парковочных мест должно быть от 1 до 100000")
-    private Integer size;
+    private Integer totalPlaces;
 }

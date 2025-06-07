@@ -15,7 +15,7 @@ public class ExControllerAdvice {
     @ExceptionHandler(value = ParkingException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorDto exceptionHandler(ParkingException ex) {
-        log.warn("Бизнес-ошибка {}", ex.getMessage());
+        log.warn("Бизнес-ошибка: {}", ex.getMessage());
 
         return ErrorDto.builder()
                 .type("Бизнес-ошибка")
@@ -26,7 +26,7 @@ public class ExControllerAdvice {
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorDto exceptionHandler(MethodArgumentNotValidException ex) {
-        log.warn("Ошибка валидации тела запроса {}", ex.getMessage());
+        log.warn("Ошибка валидации тела запроса: {}", ex.getMessage());
 
         return ErrorDto.builder()
                 .type("Ошибка валидации тела запроса")
@@ -37,7 +37,7 @@ public class ExControllerAdvice {
     @ExceptionHandler(value = Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorDto exceptionHandler(Exception ex) {
-        log.error("Непредвиденная ошибка {}", ex.getMessage(), ex);
+        log.error("Непредвиденная ошибка: {}", ex.getMessage(), ex);
 
         return ErrorDto.builder()
                 .type("Непредвиденная ошибка")

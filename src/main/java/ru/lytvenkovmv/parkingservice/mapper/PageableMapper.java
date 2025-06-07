@@ -5,11 +5,18 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import ru.lytvenkovmv.parkingservice.dto.pageable.PageableDto;
 
+import java.util.Objects;
+
 public class PageableMapper {
     public static Pageable map(PageableDto pageableDto) {
-        String property = !pageableDto.getSortBy().isEmpty() ? pageableDto.getSortBy() : "updated_at";
-        Sort.Direction dir = pageableDto.getDirection().equalsIgnoreCase("DESC") ? Sort.Direction.DESC : Sort.Direction.ASC;
+        String direction = pageableDto.getDirection();
+        Sort.Direction sortDir = Objects.nonNull(direction) && direction.equalsIgnoreCase("DESC")
+                ? Sort.Direction.DESC
+                : Sort.Direction.ASC;
 
-        return PageRequest.of(pageableDto.getPage(), pageableDto.getSize(), dir, property);
+        String sortBy = pageableDto.getSortBy();
+        String property = Objects.nonNull(sortBy) && !sortBy.isEmpty() ? sortBy : "id";
+
+        return PageRequest.of(pageableDto.getPage(), pageableDto.getSize(), sortDir, property);
     }
 }

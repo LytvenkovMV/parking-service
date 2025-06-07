@@ -1,4 +1,7 @@
 databaseChangeLog:
   - include:
-      file: 01.add-table-cars.yaml
+      file: 01.add-table-park-records.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: 02.add-park-records-reg-number-index.yaml
       relativeToChangelogFile: true

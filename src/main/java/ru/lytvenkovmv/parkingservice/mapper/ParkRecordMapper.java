@@ -21,7 +21,7 @@ public interface ParkRecordMapper {
 
     @Mapping(target = "id", expression = "java(java.util.UUID.randomUUID())")
     @Mapping(target = "type", expression = "java(this.mapType(requestDto))")
-    @Mapping(target = "leaveTime", ignore = true)
+    @Mapping(target = "exitTime", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
     ParkRecord parkRecordFrom(EnterRequestDto requestDto, LocalDateTime enterTime);

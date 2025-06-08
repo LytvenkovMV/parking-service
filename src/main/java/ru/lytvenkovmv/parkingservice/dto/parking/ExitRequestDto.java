@@ -5,7 +5,6 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import ru.lytvenkovmv.parkingservice.validation.ValidRegNumber;
-import ru.lytvenkovmv.parkingservice.validation.ValidUUID;
 
 @Getter
 @Setter

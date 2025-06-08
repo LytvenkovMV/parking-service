@@ -1,4 +1,4 @@
-package ru.lytvenkovmv.parkingservice.controller;
+package ru.lytvenkovmv.parkingservice.controller.v2;
 
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
@@ -7,10 +7,10 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import ru.lytvenkovmv.parkingservice.dto.parking.EnterRequestDto;
 import ru.lytvenkovmv.parkingservice.dto.parking.EnterResponseDto;
-import ru.lytvenkovmv.parkingservice.dto.parking.ExitRequestDto;
 import ru.lytvenkovmv.parkingservice.dto.parking.ExitResponseDto;
+import ru.lytvenkovmv.parkingservice.dto.parking.v2.EnterRequestDtoV2;
+import ru.lytvenkovmv.parkingservice.dto.parking.v2.ExitRequestDtoV2;
 import ru.lytvenkovmv.parkingservice.service.ParkingService;
 
 import java.time.LocalDateTime;
@@ -22,17 +22,17 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(ParkingController.class)
-class ParkingControllerTest {
+@WebMvcTest(ParkingControllerV2.class)
+class ParkingControllerV2Test {
     @MockBean
-    ParkingService<EnterRequestDto, ExitRequestDto, EnterResponseDto, ExitResponseDto> service;
+    ParkingService<EnterRequestDtoV2, ExitRequestDtoV2, EnterResponseDto, ExitResponseDto> service;
     @Autowired
     MockMvc mockMvc;
 
     @Test
     @SneakyThrows
     void when_enter_when_return_status_ok() {
-        String enterRequestJson = "{\"regNumber\": \"А123ВС150\", \"type\": \"Car\"}";
+        String enterRequestJson = "{\"regNumber\": \"А123ВС150\", \"type\": \"Car\", \"enterTime\": \"2024-06-01T00:00\"}";
 
         LocalDateTime enterTime = LocalDateTime.of(2024, 6, 1, 0, 0);
         EnterResponseDto enterResponseDto = new EnterResponseDto();
@@ -40,9 +40,9 @@ class ParkingControllerTest {
         enterResponseDto.setRegNumber("А123ВС150");
         enterResponseDto.setEnterTime(enterTime);
 
-        when(service.enterParking(any(EnterRequestDto.class))).thenReturn(enterResponseDto);
+        when(service.enterParking(any(EnterRequestDtoV2.class))).thenReturn(enterResponseDto);
 
-        mockMvc.perform(post("/parking/api/v1/entry")
+        mockMvc.perform(post("/parking/api/v2/entry")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(enterRequestJson)
                         .accept(MediaType.APPLICATION_JSON))
@@ -55,7 +55,7 @@ class ParkingControllerTest {
     @Test
     @SneakyThrows
     void when_exit_when_return_status_ok() {
-        String exitRequestJson = "{\"regNumber\": \"А123ВС150\"}";
+        String exitRequestJson = "{\"regNumber\": \"А123ВС150\", \"exitTime\": \"2024-06-01T00:00\"}";
 
         LocalDateTime exitTime = LocalDateTime.of(2024, 6, 1, 0, 0);
         ExitResponseDto exitResponseDto = new ExitResponseDto();
@@ -63,9 +63,9 @@ class ParkingControllerTest {
         exitResponseDto.setRegNumber("А123ВС150");
         exitResponseDto.setExitTime(exitTime);
 
-        when(service.exitParking(any(ExitRequestDto.class))).thenReturn(exitResponseDto);
+        when(service.exitParking(any(ExitRequestDtoV2.class))).thenReturn(exitResponseDto);
 
-        mockMvc.perform(post("/parking/api/v1/exit")
+        mockMvc.perform(post("/parking/api/v2/exit")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(exitRequestJson)
                         .accept(MediaType.APPLICATION_JSON))

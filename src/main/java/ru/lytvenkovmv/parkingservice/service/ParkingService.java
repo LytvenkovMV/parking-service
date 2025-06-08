@@ -1,12 +1,7 @@
 package ru.lytvenkovmv.parkingservice.service;
 
-import ru.lytvenkovmv.parkingservice.dto.parking.EnterRequestDto;
-import ru.lytvenkovmv.parkingservice.dto.parking.EnterResponseDto;
-import ru.lytvenkovmv.parkingservice.dto.parking.ExitRequestDto;
-import ru.lytvenkovmv.parkingservice.dto.parking.ExitResponseDto;
+public interface ParkingService<R1, R2, V1, V2> {
+    V1 enterParking(R1 requestDto);
 
-public interface ParkingService {
-    EnterResponseDto enterParking(EnterRequestDto requestDto);
-
-    ExitResponseDto exitParking(ExitRequestDto requestDto);
+    V2 exitParking(R2 requestDto);
 }

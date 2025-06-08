@@ -1,4 +1,4 @@
-package ru.lytvenkovmv.parkingservice.controller;
+package ru.lytvenkovmv.parkingservice.controller.v2;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -9,26 +9,26 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.lytvenkovmv.parkingservice.dto.parking.EnterRequestDto;
 import ru.lytvenkovmv.parkingservice.dto.parking.EnterResponseDto;
-import ru.lytvenkovmv.parkingservice.dto.parking.ExitRequestDto;
 import ru.lytvenkovmv.parkingservice.dto.parking.ExitResponseDto;
+import ru.lytvenkovmv.parkingservice.dto.parking.v2.EnterRequestDtoV2;
+import ru.lytvenkovmv.parkingservice.dto.parking.v2.ExitRequestDtoV2;
 import ru.lytvenkovmv.parkingservice.service.ParkingService;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/parking/api/v1")
+@RequestMapping("/parking/api/v2")
 @Tag(name = "Парковка", description = "Операции для управления парковкой")
-public class ParkingController {
-    private final ParkingService<EnterRequestDto, ExitRequestDto, EnterResponseDto, ExitResponseDto> parkingService;
+public class ParkingControllerV2 {
+    private final ParkingService<EnterRequestDtoV2, ExitRequestDtoV2, EnterResponseDto, ExitResponseDto> parkingServiceV2;
 
     @Operation(summary = "Въезд на парковку",
             description = "Добавление информации о въезде")
     @ApiResponse(responseCode = "200",
             description = "Въезд успешно зарегистрирован")
     @PostMapping("/entry")
-    EnterResponseDto entry(@RequestBody @Validated EnterRequestDto requestDto) {
-        return parkingService.enterParking(requestDto);
+    EnterResponseDto entry(@RequestBody @Validated EnterRequestDtoV2 requestDto) {
+        return parkingServiceV2.enterParking(requestDto);
     }
 
     @Operation(summary = "Выезд с парковки",
@@ -36,7 +36,7 @@ public class ParkingController {
     @ApiResponse(responseCode = "200",
             description = "Выезд успешно зарегистрирован")
     @PostMapping("/exit")
-    ExitResponseDto exit(@RequestBody @Validated ExitRequestDto requestDto) {
-        return parkingService.exitParking(requestDto);
+    ExitResponseDto exit(@RequestBody @Validated ExitRequestDtoV2 requestDto) {
+        return parkingServiceV2.exitParking(requestDto);
     }
 }

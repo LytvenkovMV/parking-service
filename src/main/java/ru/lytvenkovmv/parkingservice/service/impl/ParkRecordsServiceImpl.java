@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import ru.lytvenkovmv.parkingservice.dto.pageable.PageableDto;
 import ru.lytvenkovmv.parkingservice.dto.parking.ParkRecordResponseDto;
 import ru.lytvenkovmv.parkingservice.entity.ParkRecord;
-import ru.lytvenkovmv.parkingservice.exception.ParkingException;
+import ru.lytvenkovmv.parkingservice.exception.ParkRecordNotFoundException;
 import ru.lytvenkovmv.parkingservice.mapper.PageableMapper;
 import ru.lytvenkovmv.parkingservice.mapper.ParkRecordMapper;
 import ru.lytvenkovmv.parkingservice.repository.ParkRecordRepository;
@@ -23,10 +23,11 @@ import java.util.UUID;
 public class ParkRecordsServiceImpl implements ParkRecordsService {
     private final ParkRecordRepository repository;
     private final ParkRecordMapper mapper;
+    private final PageableMapper pageableMapper;
 
     @Override
     public List<ParkRecordResponseDto> findAll(PageableDto pageableDto) {
-        Pageable pageable = PageableMapper.map(pageableDto);
+        Pageable pageable = pageableMapper.map(pageableDto);
         Page<ParkRecord> parkRecords = repository.findAll(pageable);
 
         return parkRecords.stream()
@@ -37,7 +38,7 @@ public class ParkRecordsServiceImpl implements ParkRecordsService {
     @Override
     public ParkRecordResponseDto findById(String id) {
         ParkRecord parkRecord = repository.findById(UUID.fromString(id))
-                .orElseThrow(() -> new ParkingException("Не найдена запись с ID: " + id));
+                .orElseThrow(() -> new ParkRecordNotFoundException("Не найдена запись с ID: " + id));
 
         return mapper.parkRecordResponseDtoFrom(parkRecord);
     }

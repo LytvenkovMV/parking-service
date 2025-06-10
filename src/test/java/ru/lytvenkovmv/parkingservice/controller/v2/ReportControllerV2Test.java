@@ -1,0 +1,56 @@
+package ru.lytvenkovmv.parkingservice.controller.v2;
+
+import lombok.SneakyThrows;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+import ru.lytvenkovmv.parkingservice.dto.report.v2.ReportDtoV2;
+import ru.lytvenkovmv.parkingservice.service.impl.v2.ReportServiceV2Impl;
+
+import java.time.LocalDateTime;
+
+import static org.hamcrest.Matchers.is;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+@WebMvcTest(ReportControllerV2.class)
+class ReportControllerV2Test {
+
+    @MockBean
+    ReportServiceV2Impl reportService;
+    @Autowired
+    MockMvc mockMvc;
+
+    @Test
+    @SneakyThrows
+    void when_generateReport_then_return_reportDto() {
+        LocalDateTime startDate = LocalDateTime.of(2024, 6, 1, 0, 0, 0);
+        LocalDateTime endDate = LocalDateTime.of(2024, 6, 30, 23, 59, 59);
+
+        ReportDtoV2 reportDto = ReportDtoV2.builder()
+                .enteredVehiclesNumber(15L)
+                .exitedVehiclesNumber(10L)
+                .availablePlaces(7)
+                .occupiedPlaces(13)
+                .avgParkTimeInSeconds(3600L)
+                .build();
+
+        when(reportService.generate(startDate, endDate)).thenReturn(reportDto);
+
+        mockMvc.perform(get("/parking/api/v2/reports")
+                        .param("startDate", "2024-06-01T00:00:00")
+                        .param("endDate", "2024-06-30T23:59:59")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.enteredVehiclesNumber", is(15)))
+                .andExpect(jsonPath("$.exitedVehiclesNumber", is(10)))
+                .andExpect(jsonPath("$.availablePlaces", is(7)))
+                .andExpect(jsonPath("$.occupiedPlaces", is(13)))
+                .andExpect(jsonPath("$.avgParkTimeInSeconds", is(3600)));
+    }
+}
